@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (size > 500) size = 500; // limit preview size
     canvas.width = size;
     canvas.height = size;
-    // Use qrcode library to draw on canvas (qrcode.toCanvas)
+    // Use qrcode library to draw on canvas 
     if (window.QRCode) {
       // clear canvas first
       const ctx = canvas.getContext('2d');
@@ -32,12 +32,12 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = function(e) {
               const img = new Image();
               img.onload = function() {
-                // draw logo at center, scaled to 20% of QR size
+                // draw logo at center
                 const ctx = canvas.getContext('2d');
                 const logoSize = Math.floor(size * 0.20);
                 const x = Math.floor((size - logoSize) / 2);
                 const y = Math.floor((size - logoSize) / 2);
-                // draw white rounded background for logo to improve contrast
+                // draw white rounded background 
                 ctx.fillStyle = fg === '#000000' ? '#ffffff' : '#ffffff';
                 const pad = Math.floor(logoSize * 0.12);
                 ctx.fillRect(x-pad, y-pad, logoSize + pad*2, logoSize + pad*2);
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
     } else {
-      // fallback simple preview
+      
       const ctx = canvas.getContext('2d');
       ctx.fillStyle = bg; ctx.fillRect(0,0,canvas.width, canvas.height);
       ctx.fillStyle = fg;
