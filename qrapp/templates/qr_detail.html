@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>QR Detail</h3>
+{% if qr.image %}<img src="{{ qr.image.url }}" alt="QR">{% endif %}
+<p>Data: {{ qr.data }}</p>
+<p>Created: {{ qr.created_at }}</p>
+<a href="{% url 'qr_download' qr.pk %}" class="btn btn-primary">Download</a>
+{% endblock %}

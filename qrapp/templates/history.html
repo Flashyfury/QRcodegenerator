@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Your QRs</h3>
+{% if items %}
+  <div class="row">
+    {% for i in items %}
+      <div class="col-md-4">
+        <div class="card mb-3">
+          {% if i.image %}<img src="{{ i.image.url }}" class="card-img-top" alt="QR">{% endif %}
+          <div class="card-body">
+            <p class="card-text">{{ i.data|truncatechars:60 }}</p>
+            <a href="{% url 'qr_detail' i.pk %}" class="btn btn-sm btn-primary">Open</a>
+            <a href="{% url 'qr_download' i.pk %}" class="btn btn-sm btn-secondary">Download</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No saved QRs yet.</p>
+{% endif %}
+{% endblock %}
