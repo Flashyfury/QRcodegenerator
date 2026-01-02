@@ -3,8 +3,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# -------------------------
+# Basic Security
+# -------------------------
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
-
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = [
@@ -15,8 +17,12 @@ ALLOWED_HOSTS = [
 
 CSRF_TRUSTED_ORIGINS = [
     "https://qrcodegenerator-00.onrender.com",
+    "http://localhost:8000",
 ]
 
+# -------------------------
+# Installed Apps
+# -------------------------
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,15 +30,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Project apps
     'qrapp',
+
+    # Third-party
     'crispy_forms',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+# -------------------------
+# Middleware
+# -------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # Whitenoise for static files on Render
     'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -43,10 +59,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'qrsite.urls'
 
+# -------------------------
+# Templates
+# -------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'qrapp' / 'templates'],
+        'DIRS': [
+            BASE_DIR / 'qrapp' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -61,6 +82,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'qrsite.wsgi.application'
 
+# -------------------------
+# Database (SQLite → OK for Render)
+# -------------------------
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -70,14 +94,29 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = []
 
+# -------------------------
+# Localization
+# -------------------------
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
+# -------------------------
+# Static & Media (Render Ready)
+# -------------------------
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'qrapp' / 'static']
+
+# Where static files are collected
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Where your app static files live during development
+STATICFILES_DIRS = [
+    BASE_DIR / 'qrapp' / 'static',
+]
+
+# Whitenoise storage (required for Render)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
