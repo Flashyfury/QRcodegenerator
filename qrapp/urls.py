@@ -8,5 +8,6 @@ urlpatterns = [
     path('history/', views.history, name='history'),
     path('qr/<int:pk>/', views.qr_detail, name='qr_detail'),
     path('qr/<int:pk>/download/', views.download_qr, name='qr_download'),
-    path('preview/', views.preview_image, name='preview_image'),  # optional server-side preview endpoint
+    path('preview/', views.preview_image, name='preview_image'), 
+    path('live_preview/', views.live_preview, name='live_preview'),
 ]

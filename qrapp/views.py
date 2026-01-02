@@ -11,6 +11,30 @@ from .models import QRCodeItem
 import qrcode
 from PIL import Image
 from django.core.files.base import ContentFile
+from django.views.decorators.csrf import csrf_exempt
+import base64
+
+@csrf_exempt
+def live_preview(request):
+    if request.method == "POST":
+        data = request.POST.get("data", "")
+        fg = request.POST.get("fg_color", "#000000")
+        bg = request.POST.get("bg_color", "#ffffff")
+        size = int(request.POST.get("size", 300))
+
+        qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H, box_size=10, border=4)
+        qr.add_data(data)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color=fg, back_color=bg).convert("RGBA")
+        img = img.resize((size, size), Image.NEAREST)
+
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        img_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+        return JsonResponse({
+            "image": f"data:image/png;base64,{img_base64}"
+        })
 
 def home(request):
     if request.method == 'POST':
