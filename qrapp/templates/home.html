@@ -50,6 +50,7 @@ function updatePreview(){
 
     fetch("/live-preview/", {
       method:"POST",
+      credentials:"same-origin",
       headers:{
         "X-CSRFToken": getCSRFToken()
       },
