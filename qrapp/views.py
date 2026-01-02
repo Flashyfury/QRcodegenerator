@@ -15,14 +15,13 @@ from PIL import Image
 
 
 # ---------------- LIVE PREVIEW API ----------------
-
 @csrf_exempt
 def live_preview(request):
     if request.method == "POST":
-        data = request.POST.get("data", "")
-        fg = request.POST.get("fg_color", "#000000")
-        bg = request.POST.get("bg_color", "#ffffff")
-        size = int(request.POST.get("size", 300))
+        data = request.POST.get("data") or request.POST.get("id_data") or ""
+        fg = request.POST.get("fg_color") or request.POST.get("id_fg_color") or "#000000"
+        bg = request.POST.get("bg_color") or request.POST.get("id_bg_color") or "#ffffff"
+        size = int(request.POST.get("size") or request.POST.get("id_size") or 300)
 
         qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_H, box_size=10, border=4)
         qr.add_data(data)
@@ -31,11 +30,11 @@ def live_preview(request):
         img = qr.make_image(fill_color=fg, back_color=bg).convert("RGBA")
         img = img.resize((size, size), Image.Resampling.NEAREST)
 
-        buffer = BytesIO()
-        img.save(buffer, format="PNG")
-        img_base64 = base64.b64encode(buffer.getvalue()).decode()
+        buf = BytesIO()
+        img.save(buf, format="PNG")
+        img64 = base64.b64encode(buf.getvalue()).decode()
 
-        return JsonResponse({"image": f"data:image/png;base64,{img_base64}"})
+        return JsonResponse({"image": f"data:image/png;base64,{img64}"})
 
 
 # ---------------- MAIN PAGES ----------------
