@@ -41,22 +41,32 @@ const canvas = document.getElementById("preview-canvas");
 const ctx = canvas.getContext("2d");
 const downloadBtn = document.getElementById("download-preview");
 
+function getCSRFToken() {
+  return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
 function updatePreview(){
     const data = new FormData(form);
 
-    fetch("/live-preview/", { method:"POST", body:data })
-      .then(r=>r.json())
-      .then(res=>{
+    fetch("/live-preview/", {
+      method:"POST",
+      headers:{
+        "X-CSRFToken": getCSRFToken()
+      },
+      body:data
+    })
+    .then(r=>r.json())
+    .then(res=>{
         const img = new Image();
         img.onload = ()=>{
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx.clearRect(0,0,canvas.width,canvas.height);
-          ctx.drawImage(img,0,0);
-          downloadBtn.href = canvas.toDataURL("image/png");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.drawImage(img,0,0);
+            downloadBtn.href = canvas.toDataURL("image/png");
         };
         img.src = res.image;
-      });
+    });
 }
 
 form.addEventListener("input", updatePreview);
