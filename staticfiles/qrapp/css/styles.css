@@ -1,0 +1,3 @@
+body { background:#f8f9fa; }
+#preview-area { position: relative; }
+#logo-overlay img { position: absolute; left:50%; top:50%; transform: translate(-50%,-50%); pointer-events: none; }

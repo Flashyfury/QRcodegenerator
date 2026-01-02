@@ -112,9 +112,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Where your app static files live during development
-STATICFILES_DIRS = [
-    BASE_DIR / 'qrapp' / 'static',
-]
+
 
 # Whitenoise storage (required for Render)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
